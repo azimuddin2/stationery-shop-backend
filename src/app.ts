@@ -10,18 +10,17 @@ app.use(express.json())
 app.use(cors())
 
 // application routes
-app.use('/api/products', ProductRoutes);
-app.use('/api/orders', OrderRoutes);
+app.use('/api/products', ProductRoutes)
+app.use('/api/orders', OrderRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!')
 })
 
-
 // client error handling
 app.use((req: Request, res: Response, next: NextFunction) => {
-  next(createHttpError(404, 'Route not found'));
-});
+  next(createHttpError(404, 'Route not found'))
+})
 
 // Server error handling middleware
 // app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
