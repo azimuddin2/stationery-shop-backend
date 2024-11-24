@@ -8,6 +8,13 @@ const productSchema = new Schema<Product>({
         trim: true,
         minlength: [3, 'The length of product name can be minimum 3 characters'],
         maxlength: [80, 'The length of product name can be maximum 80 characters '],
+        validate: {
+            validator: function (value: string) {
+                const name = value.charAt(0).toUpperCase() + value.slice(1);
+                return name === value;
+            },
+            message: '{VALUE} is not in capitalize format',
+        },
     },
     brand: {
         type: String,
@@ -46,6 +53,5 @@ const productSchema = new Schema<Product>({
     },
 }, { timestamps: true });
 
-const ProductModel = model<Product>('Product', productSchema);
 
-export default ProductModel;
+export const ProductModel = model<Product>('Product', productSchema);
