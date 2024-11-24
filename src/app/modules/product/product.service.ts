@@ -56,24 +56,97 @@ const getAllProducts = async (search: string): Promise<Product[]> => {
 
 const getSingleProduct = async (id: string): Promise<Product | null> => {
     try {
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            throw createError(
-                400,
-                `Invalid product ID format: ${id}`
-            );
-        }
-
         const product = await ProductModel.findById(id);
 
         if (!product) {
             throw createError(
                 404,
                 `Product ID ${id} does not exist.`
-            )
+            );
         }
 
         return product;
     } catch (error: unknown) {
+        if (error instanceof mongoose.Error.CastError) {
+            throw createError(
+                400,
+                'Invalid product ID format'
+            );
+        }
+        throw error;
+    }
+};
+
+const updateProduct = async (id: string, product: Partial<Product>): Promise<Product | null> => {
+    try {
+        const { name, brand, price, category, description, quantity, inStock } = product;
+
+        const productExists = await ProductModel.findById(id);
+        if (!productExists) {
+            throw createError(
+                404,
+                `Product ID ${id} does not exist.`
+            );
+        }
+
+        const updateDoc = {
+            $set: {
+                name: name,
+                brand: brand,
+                price: price,
+                category: category,
+                description: description,
+                quantity: quantity,
+                inStock: inStock
+            },
+        };
+
+        const options = { new: true };
+
+        const result = await ProductModel.findByIdAndUpdate(id, updateDoc, options);
+        if (!result) {
+            throw createError(
+                401,
+                'Product was not updated successfully'
+            );
+        }
+
+        return result;
+    } catch (error: unknown) {
+        if (error instanceof mongoose.Error.CastError) {
+            throw createError(
+                400,
+                'Invalid product ID format'
+            );
+        }
+        throw error;
+    }
+};
+
+const deleteProduct = async (id: string) => {
+    try {
+        const productExists = await ProductModel.findById(id);
+        if (!productExists) {
+            throw createError(
+                404,
+                `Product ID ${id} does not exist.`
+            );
+        }
+
+        const result = await ProductModel.findByIdAndDelete(id);
+        if (!result) {
+            throw createError(
+                401,
+                'Product was not deleted successfully'
+            );
+        }
+    } catch (error: unknown) {
+        if (error instanceof mongoose.Error.CastError) {
+            throw createError(
+                400,
+                'Invalid product ID format'
+            );
+        }
         throw error;
     }
 };
@@ -82,4 +155,6 @@ export const ProductServices = {
     createProduct,
     getAllProducts,
     getSingleProduct,
+    updateProduct,
+    deleteProduct,
 }
