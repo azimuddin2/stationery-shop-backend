@@ -22,7 +22,7 @@
 
 
 ✅ Product API
- - 🔖 Product interface - model and schema with validations for Product
+ - 🔖 Product interface - schema and model with validations for Product
     - create product validation
     - create product routes and controller
 
@@ -58,7 +58,7 @@
 
 
 ✅ Order API
-- 🔖 Order interface - model and schema with validations for order api
+- 🔖 Order interface -schema and model with validations for order api
     - create order validation
     - create order routes controller and service
 

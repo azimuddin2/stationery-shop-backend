@@ -3,7 +3,7 @@ import { ProductServices } from './product.service'
 
 const handleCreateProduct = async (req: Request, res: Response) => {
   try {
-    const { product: productData } = req.body
+    const productData = req.body
     const result = await ProductServices.createProduct(productData)
 
     res.status(200).json({
@@ -77,7 +77,7 @@ const handleUpdateProduct = async (
 ): Promise<void> => {
   try {
     const { productId } = req.params
-    const { product: productData } = req.body
+    const productData = req.body
 
     const result = await ProductServices.updateProduct(productId, productData)
 
