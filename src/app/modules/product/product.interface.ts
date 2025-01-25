@@ -7,11 +7,11 @@ export enum ProductCategory {
 }
 
 export interface Product {
-  name: string
-  brand: string
-  price: number
-  category: ProductCategory
-  description: string
-  quantity: number
-  inStock: boolean
+  name: string;
+  brand: string;
+  price: number;
+  category: ProductCategory;
+  description: string;
+  quantity: number;
+  inStock: boolean;
 }

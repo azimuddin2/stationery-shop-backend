@@ -1,42 +1,42 @@
-import { ProductModel } from '../product/product.model'
-import { Order } from './order.interface'
-import { OrderModel } from './order.model'
+import { ProductModel } from '../product/product.model';
+import { Order } from './order.interface';
+import { OrderModel } from './order.model';
 
 const createOrder = async (order: Order) => {
   try {
-    const { email, product: productId, quantity } = order
+    const { email, product: productId, quantity } = order;
 
     if (!email || !productId || !quantity || quantity <= 0) {
-      throw new Error('All fields are required.')
+      throw new Error('All fields are required.');
     }
 
-    const productData = await ProductModel.findById(productId)
+    const productData = await ProductModel.findById(productId);
     if (!productData) {
-      throw new Error('Product not found.')
+      throw new Error('Product not found.');
     }
 
     // Check if sufficient stock is available
     if (productData.quantity < quantity) {
-      throw new Error('Insufficient stock available.')
+      throw new Error('Insufficient stock available.');
     }
 
     // Reduce inventory and update inStock status
-    productData.quantity -= quantity
+    productData.quantity -= quantity;
     if (productData.quantity === 0) {
-      productData.inStock = false
+      productData.inStock = false;
     }
-    await productData.save()
+    await productData.save();
 
     // Create a new order
-    const newOrder = new OrderModel(order)
-    await newOrder.save()
+    const newOrder = new OrderModel(order);
+    await newOrder.save();
 
-    return newOrder
+    return newOrder;
   } catch (error: unknown) {
-    throw error
+    throw error;
   }
-}
+};
 
 export const OrderServices = {
   createOrder,
-}
+};

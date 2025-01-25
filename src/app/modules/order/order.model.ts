@@ -1,5 +1,5 @@
-import mongoose, { model, Schema } from 'mongoose'
-import { Order } from './order.interface'
+import mongoose, { model, Schema } from 'mongoose';
+import { Order } from './order.interface';
 
 const orderSchema = new Schema<Order>(
   {
@@ -8,8 +8,8 @@ const orderSchema = new Schema<Order>(
       required: [true, 'Email is required'],
       validate: {
         validator: (email: string) => {
-          const emailRegex = /^\S+@\S+\.\S+$/
-          return emailRegex.test(email)
+          const emailRegex = /^\S+@\S+\.\S+$/;
+          return emailRegex.test(email);
         },
         message: 'Invalid email format.',
       },
@@ -31,6 +31,6 @@ const orderSchema = new Schema<Order>(
     },
   },
   { timestamps: true },
-)
+);
 
-export const OrderModel = model<Order>('Order', orderSchema)
+export const OrderModel = model<Order>('Order', orderSchema);

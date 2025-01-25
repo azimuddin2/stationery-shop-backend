@@ -1,5 +1,5 @@
-import { Schema, model, connect } from 'mongoose'
-import { Product, ProductCategory } from './product.interface'
+import { Schema, model, connect } from 'mongoose';
+import { Product, ProductCategory } from './product.interface';
 
 const productSchema = new Schema<Product>(
   {
@@ -14,8 +14,8 @@ const productSchema = new Schema<Product>(
       ],
       validate: {
         validator: function (value: string) {
-          const name = value.charAt(0).toUpperCase() + value.slice(1)
-          return name === value
+          const name = value.charAt(0).toUpperCase() + value.slice(1);
+          return name === value;
         },
         message: '{VALUE} is not in capitalize format',
       },
@@ -58,6 +58,6 @@ const productSchema = new Schema<Product>(
     },
   },
   { timestamps: true },
-)
+);
 
-export const ProductModel = model<Product>('Product', productSchema)
+export const ProductModel = model<Product>('Product', productSchema);
