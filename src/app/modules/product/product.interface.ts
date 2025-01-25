@@ -1,17 +1,17 @@
-export enum ProductCategory {
-  Writing = 'Writing',
-  OfficeSupplies = 'Office Supplies',
-  ArtSupplies = 'Art Supplies',
-  Educational = 'Educational',
-  Technology = 'Technology',
-}
+export type TProductCategory =
+  | 'Writing'
+  | 'Office Supplies'
+  | 'Art Supplies'
+  | 'Educational'
+  | 'Technology';
 
-export interface Product {
+export type TProduct = {
   name: string;
   brand: string;
   price: number;
-  category: ProductCategory;
+  category: TProductCategory;
   description: string;
+  image: string;
   quantity: number;
   inStock: boolean;
-}
+};

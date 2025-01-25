@@ -1,7 +1,8 @@
-import { Schema, model, connect } from 'mongoose';
-import { Product, ProductCategory } from './product.interface';
+import { Schema, model } from 'mongoose';
+import { TProduct } from './product.interface';
+import { ProductCategory } from './product.constant';
 
-const productSchema = new Schema<Product>(
+const productSchema = new Schema<TProduct>(
   {
     name: {
       type: String,
@@ -38,13 +39,21 @@ const productSchema = new Schema<Product>(
     category: {
       type: String,
       required: [true, 'Category is required'],
-      enum: Object.values(ProductCategory),
+      enum: {
+        values: ProductCategory,
+        message: '{VALUE} is not valid',
+      },
     },
     description: {
       type: String,
       required: [true, 'Description is required'],
       trim: true,
       maxlength: [500, 'Description cannot exceed 500 characters'],
+    },
+    image: {
+      type: String,
+      required: true,
+      trim: true,
     },
     quantity: {
       type: Number,
@@ -53,11 +62,10 @@ const productSchema = new Schema<Product>(
     },
     inStock: {
       type: Boolean,
-      required: true,
       default: true,
     },
   },
   { timestamps: true },
 );
 
-export const ProductModel = model<Product>('Product', productSchema);
+export const ProductModel = model<TProduct>('Product', productSchema);
