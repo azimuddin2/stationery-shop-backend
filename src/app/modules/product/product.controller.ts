@@ -1,129 +1,19 @@
-import { Request, Response } from 'express';
-import { ProductServices } from './product.service';
+import catchAsync from '../../utils/catchAsync';
 
-const handleCreateProduct = async (req: Request, res: Response) => {
-  try {
-    const productData = req.body;
-    const result = await ProductServices.createProduct(productData);
+const createProduct = catchAsync(async (req, res) => {});
 
-    res.status(200).json({
-      success: true,
-      message: 'Product created successfully',
-      data: result,
-    });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'Product creation failed',
-      error: err,
-      stack: err.stack,
-    });
-  }
-};
+const getAllProducts = catchAsync(async (req, res) => {});
 
-const handleGetAllProducts = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  try {
-    const search: string = (req.query.searchTerm as string) || '';
-    const result = await ProductServices.getAllProducts(search);
+const getSingleProduct = catchAsync(async (req, res) => {});
 
-    res.status(200).json({
-      success: true,
-      message: 'Products retrieved successfully',
-      data: result,
-    });
-  } catch (error: unknown) {
-    const err = error as Error;
+const updateProduct = catchAsync(async (req, res) => {});
 
-    res.status(500).json({
-      success: false,
-      message: err.message || 'Failed to retrieve products.',
-      error: err.name,
-      stack: err.stack,
-    });
-  }
-};
-
-const handleGetSingleProduct = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  try {
-    const { productId } = req.params;
-    const result = await ProductServices.getSingleProduct(productId);
-
-    res.status(200).json({
-      success: true,
-      message: 'Products retrieved successfully',
-      data: result,
-    });
-  } catch (error: unknown) {
-    const err = error as Error;
-
-    res.status(500).json({
-      success: false,
-      message: err.message || 'Failed to retrieve products.',
-      error: err.name,
-      stack: err.stack,
-    });
-  }
-};
-
-const handleUpdateProduct = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  try {
-    const { productId } = req.params;
-    const productData = req.body;
-
-    const result = await ProductServices.updateProduct(productId, productData);
-
-    res.status(200).json({
-      success: true,
-      message: 'Product was updated successfully',
-      data: result,
-    });
-  } catch (error: unknown) {
-    const err = error as Error;
-
-    res.status(500).json({
-      success: false,
-      message: err.message || 'Product updated failed',
-      error: err.name,
-      stack: err.stack,
-    });
-  }
-};
-
-const handleDeleteProduct = async (req: Request, res: Response) => {
-  try {
-    const { productId } = req.params;
-    await ProductServices.deleteProduct(productId);
-
-    res.status(200).json({
-      success: true,
-      message: 'Product was deleted successfully',
-      data: {},
-    });
-  } catch (error: unknown) {
-    const err = error as Error;
-
-    res.status(500).json({
-      success: false,
-      message: err.message || 'Product deleted failed',
-      error: err.name,
-      stack: err.stack,
-    });
-  }
-};
+const deleteProduct = catchAsync(async (req, res) => {});
 
 export const ProductControllers = {
-  handleCreateProduct,
-  handleGetAllProducts,
-  handleGetSingleProduct,
-  handleUpdateProduct,
-  handleDeleteProduct,
+  createProduct,
+  getAllProducts,
+  getSingleProduct,
+  updateProduct,
+  deleteProduct,
 };
