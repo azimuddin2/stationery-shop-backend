@@ -15,7 +15,7 @@ const registerUser = catchAsync(async (req, res) => {
 
 const getAllUsers = catchAsync(async (req, res) => {
   const result = await UserServices.getAllUsersFromDB(req.query);
-
+  console.log(req.user);
   sendResponse(res, {
     statusCode: 200,
     success: true,
