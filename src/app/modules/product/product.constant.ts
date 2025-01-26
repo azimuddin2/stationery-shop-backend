@@ -7,3 +7,5 @@ export const ProductCategory: TProductCategory[] = [
   'Educational',
   'Technology',
 ];
+
+export const productSearchableFields = ['name', 'brand', 'category'];
