@@ -1,31 +1,23 @@
-import express, { Application, NextFunction, Request, Response } from 'express';
+import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import createHttpError from 'http-errors';
 import router from './app/routes';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import notFound from './app/middlewares/notFound';
+
 const app: Application = express();
 
 // parsers
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 
 // application routes
 app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  res.send('Stationery Shop Backend App Running!');
 });
 
-// client error handling
-app.use((req: Request, res: Response, next: NextFunction) => {
-  next(createHttpError(404, 'Route not found'));
-});
-
-// Server error handling middleware
-// app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
-//   return res.status(err.status || 500).json({
-//     success: false,
-//     message: err.message,
-//   });
-// });
+app.use(globalErrorHandler);
+app.use(notFound);
 
 export default app;
