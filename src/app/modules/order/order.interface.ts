@@ -1,8 +1,13 @@
-import mongoose, { Document } from 'mongoose';
+import mongoose from 'mongoose';
 
-export interface Order extends Document {
+export type TOrder = {
   email: string;
-  product: mongoose.Types.ObjectId;
-  quantity: number;
+  items: {
+    product: mongoose.Schema.Types.ObjectId;
+    name: string;
+    price: number;
+    quantity: number;
+  }[];
   totalPrice: number;
-}
+  status: 'Pending' | 'Shipping' | 'Delivered';
+};

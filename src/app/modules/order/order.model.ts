@@ -1,36 +1,44 @@
-import mongoose, { model, Schema } from 'mongoose';
-import { Order } from './order.interface';
+import { model, Schema } from 'mongoose';
+import { TOrder } from './order.interface';
 
-const orderSchema = new Schema<Order>(
+const orderSchema = new Schema<TOrder>(
   {
     email: {
       type: String,
-      required: [true, 'Email is required'],
-      validate: {
-        validator: (email: string) => {
-          const emailRegex = /^\S+@\S+\.\S+$/;
-          return emailRegex.test(email);
+      required: true,
+    },
+    items: [
+      {
+        product: {
+          type: Schema.Types.ObjectId,
+          ref: 'Product',
+          required: true,
         },
-        message: 'Invalid email format.',
+        name: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
       },
-    },
-    product: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-      min: [1, 'Quantity must be at least 1.'],
-    },
+    ],
     totalPrice: {
       type: Number,
       required: true,
-      min: [0, 'Total price must be a positive number.'],
+    },
+    status: {
+      type: String,
+      enum: ['Pending', 'Shipping', 'Delivered'],
+      default: 'Pending',
     },
   },
   { timestamps: true },
 );
 
-export const OrderModel = model<Order>('Order', orderSchema);
+export const Order = model<TOrder>('Order', orderSchema);

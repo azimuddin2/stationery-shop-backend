@@ -1,60 +1,57 @@
-import { Request, Response } from 'express';
+import catchAsync from '../../utils/catchAsync';
 import { OrderServices } from './order.service';
-import { OrderModel } from './order.model';
+import sendResponse from '../../utils/sendResponse';
 
-const handleCreateOrder = async (req: Request, res: Response) => {
-  try {
-    const orderData = req.body;
-    const result = await OrderServices.createOrder(orderData);
+const createOrder = catchAsync(async (req, res) => {
+  const result = await OrderServices.createOrderIntoDB(req.body);
 
-    res.status(200).json({
-      success: true,
-      message: 'Order created successfully',
-      data: result,
-    });
-  } catch (error) {
-    const err = error as Error;
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Order placed successfully!',
+    data: result,
+  });
+});
 
-    res.status(500).json({
-      success: false,
-      message: err.message || 'Product creation failed',
-      error: err.name,
-      stack: err.stack,
-    });
-  }
-};
+const getAllOrders = catchAsync(async (req, res) => {
+  const result = await OrderServices.getAllOrdersFromDB(req.query);
 
-const handleCalculateRevenue = async (req: Request, res: Response) => {
-  try {
-    const revenueResult = await OrderModel.aggregate([
-      {
-        $project: { totalRevenue: { $multiply: ['$quantity', '$totalPrice'] } },
-      },
-      { $group: { _id: null, totalRevenue: { $sum: '$totalRevenue' } } },
-    ]);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Orders retrieved successfully',
+    meta: result.meta,
+    data: result.result,
+  });
+});
 
-    const totalRevenue =
-      revenueResult.length > 0 ? revenueResult[0].totalRevenue : 0;
+const updateOrder = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await OrderServices.updateOrderIntoDB(id, req.body);
 
-    res.status(200).json({
-      success: true,
-      status: true,
-      message: 'Revenue calculated successfully',
-      data: { totalRevenue: totalRevenue },
-    });
-  } catch (error: unknown) {
-    const err = error as Error;
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Orders updated successfully',
+    data: result,
+  });
+});
 
-    res.status(500).json({
-      success: false,
-      message: err.message || 'An error occurred while calculating revenue',
-      error: err.name,
-      stack: err.stack,
-    });
-  }
-};
+const deleteOrder = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await OrderServices.deleteOrderFromDB(id);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Orders deleted successfully',
+    data: result,
+  });
+});
 
 export const OrderControllers = {
-  handleCreateOrder,
-  handleCalculateRevenue,
+  createOrder,
+  getAllOrders,
+  updateOrder,
+  deleteOrder,
 };
