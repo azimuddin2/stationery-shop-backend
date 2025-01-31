@@ -13,7 +13,9 @@ router.post(
   OrderControllers.createOrder,
 );
 
-router.get('/', auth('admin', 'user'), OrderControllers.getAllOrders);
+router.get('/', auth('admin'), OrderControllers.getAllOrders);
+
+router.get('/my-orders', auth('user'), OrderControllers.getOrdersByEmail);
 
 router.patch(
   '/:id',

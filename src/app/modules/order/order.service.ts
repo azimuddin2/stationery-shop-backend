@@ -68,6 +68,18 @@ const getAllOrdersFromDB = async (query: Record<string, unknown>) => {
   return { meta, result };
 };
 
+const getOrdersByEmailFromDB = async (query: Record<string, unknown>) => {
+  const filter = { email: query.email };
+
+  const isEmailExists = await Order.findOne(filter);
+  if (!isEmailExists) {
+    throw new AppError(404, 'Order not found');
+  }
+
+  const result = await Order.find(filter);
+  return result;
+};
+
 const updateOrderIntoDB = async (id: string, payload: Partial<TOrder>) => {
   const isOrderExists = await Order.findById(id);
 
@@ -98,6 +110,7 @@ const deleteOrderFromDB = async (id: string) => {
 export const OrderServices = {
   createOrderIntoDB,
   getAllOrdersFromDB,
+  getOrdersByEmailFromDB,
   updateOrderIntoDB,
   deleteOrderFromDB,
 };
