@@ -10,7 +10,7 @@ const paymentValidationSchema = z.object({
     amount: z
       .number()
       .positive({ message: 'Amount must be greater than zero' }),
-    status: z.enum([...Status] as [string, ...string[]]).default('pending'),
+    status: z.enum([...Status] as [string, ...string[]]).default('Pending'),
     date: z.date().optional(),
   }),
 });

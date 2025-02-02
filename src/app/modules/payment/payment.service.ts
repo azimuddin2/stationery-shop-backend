@@ -3,6 +3,8 @@ import config from '../../config';
 import { TPayment } from './payment.interface';
 import AppError from '../../errors/AppError';
 import { Payment } from './payment.model';
+import { Order } from '../order/order.model';
+import mongoose from 'mongoose';
 
 const stripe = require('stripe')(config.payment_secret_key);
 
@@ -21,32 +23,54 @@ const createPaymentIntent = async (req: Request, res: Response) => {
 };
 
 const processPayment = async (payload: TPayment) => {
-  const { email, transactionId, amount } = payload;
+  const { email, transactionId, amount, orderId } = payload;
 
   if (!email || !transactionId || !amount) {
     throw new AppError(400, 'Invalid payment data');
   }
 
-  const newPayment = new Payment({
-    email,
-    transactionId,
-    amount,
-    status: 'completed',
-  });
-  await newPayment.save();
+  const session = await mongoose.startSession();
 
-  return newPayment;
+  try {
+    session.startTransaction();
+
+    const newPayment = {
+      email,
+      transactionId,
+      amount,
+      status: 'Completed',
+    };
+
+    const result = await Payment.create([newPayment], { session });
+    if (!result) {
+      throw new AppError(400, 'Failed to payment process');
+    }
+
+    await Order.findByIdAndUpdate(
+      orderId,
+      { paid: true, transactionId: transactionId },
+      { new: true, session },
+    );
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return result;
+  } catch (error: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(error);
+  }
 };
 
 const getPaymentsByEmailFromDB = async (query: Record<string, unknown>) => {
   const filter = { email: query.email };
 
-  const isEmailExists = await Payment.findOne(filter);
-  if (!isEmailExists) {
+  const result = await Payment.find(filter);
+  if (!result) {
     throw new AppError(404, 'Payment history not found');
   }
 
-  const result = await Payment.find(filter);
   return result;
 };
 

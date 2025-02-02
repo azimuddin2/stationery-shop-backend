@@ -1,6 +1,6 @@
 import { Date } from 'mongoose';
 
-export type TStatus = 'pending' | 'completed' | 'failed';
+export type TStatus = 'Pending' | 'Completed' | 'Failed';
 
 export type TPayment = {
   email: string;
@@ -8,4 +8,5 @@ export type TPayment = {
   amount: number;
   date: Date;
   status: TStatus;
+  orderId?: string;
 };

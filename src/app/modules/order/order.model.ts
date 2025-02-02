@@ -37,6 +37,13 @@ const orderSchema = new Schema<TOrder>(
       enum: ['Pending', 'Shipping', 'Delivered'],
       default: 'Pending',
     },
+    paid: {
+      type: Boolean,
+      default: false,
+    },
+    transactionId: {
+      type: String,
+    },
   },
   { timestamps: true },
 );

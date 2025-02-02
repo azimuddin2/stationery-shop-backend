@@ -15,6 +15,8 @@ const createOrderValidationSchema = z.object({
       .min(1, 'At least one product must be in the order'),
     totalPrice: z.number().positive('Total price must be greater than 0'),
     status: z.enum(['Pending', 'Shipping', 'Delivered']).optional(),
+    paid: z.boolean().default(false).optional(),
+    transactionId: z.string().optional(),
   }),
 });
 

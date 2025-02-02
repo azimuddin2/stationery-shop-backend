@@ -10,4 +10,6 @@ export type TOrder = {
   }[];
   totalPrice: number;
   status: 'Pending' | 'Shipping' | 'Delivered';
+  paid: boolean;
+  transactionId?: string;
 };

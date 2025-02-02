@@ -22,7 +22,7 @@ const paymentSchema = new Schema<TPayment>(
       enum: {
         values: Status,
       },
-      default: 'pending',
+      default: 'Pending',
     },
     date: {
       type: Date,

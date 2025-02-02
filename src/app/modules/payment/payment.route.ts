@@ -19,10 +19,6 @@ router.post(
   PaymentControllers.handleProcessPayment,
 );
 
-router.get(
-  '/payment-history',
-  auth('user'),
-  PaymentControllers.getPaymentsByEmail,
-);
+router.get('/', auth('user'), PaymentControllers.getPaymentsByEmail);
 
 export const PaymentRoutes = router;
