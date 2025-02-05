@@ -40,8 +40,27 @@ const getSingleUserFromDB = async (id: string) => {
   return user;
 };
 
+const updateUserIntoDB = async (
+  email: string,
+  payload: Partial<TRegisterUser>,
+) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new AppError(404, 'User not found');
+  }
+
+  const result = await User.findOneAndUpdate({ email }, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  return result;
+};
+
 export const UserServices = {
   registerUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
+  updateUserIntoDB,
 };

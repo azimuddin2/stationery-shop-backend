@@ -96,7 +96,7 @@ const updateOrderIntoDB = async (id: string, payload: Partial<TOrder>) => {
 };
 
 const deleteOrderFromDB = async (id: string) => {
-  const isOrderExists = await Product.findById(id);
+  const isOrderExists = await Order.findById(id);
 
   if (!isOrderExists) {
     throw new AppError(404, 'This order not found');

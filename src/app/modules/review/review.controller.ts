@@ -8,7 +8,7 @@ const createReview = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: 201,
     success: true,
-    message: 'Review is created successfully',
+    message: 'Your message has been successfully submitted',
     data: result,
   });
 });

@@ -5,6 +5,8 @@ export type TRegisterUser = {
   email: string;
   password: string;
   role: 'admin' | 'user';
+  image?: string;
+  address?: string;
   isBlocked: boolean;
 };
 

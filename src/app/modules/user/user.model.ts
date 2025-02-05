@@ -40,6 +40,14 @@ const registerUserSchema = new Schema<TRegisterUser>(
       },
       default: 'user',
     },
+    image: {
+      type: String,
+      trim: true,
+    },
+    address: {
+      type: String,
+      trim: true,
+    },
     isBlocked: {
       type: Boolean,
       default: false,

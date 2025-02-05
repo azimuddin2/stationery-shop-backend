@@ -14,6 +14,13 @@ router.post(
 
 router.get('/', auth('admin'), UserControllers.getAllUsers);
 
-router.get('/:id', UserControllers.getSingleUser);
+router.get('/:id', auth('admin', 'user'), UserControllers.getSingleUser);
+
+router.patch(
+  '/:email',
+  auth('admin', 'user'),
+  validateRequest(UserValidations.updateUserValidationSchema),
+  UserControllers.updateUser,
+);
 
 export const UserRoutes = router;
