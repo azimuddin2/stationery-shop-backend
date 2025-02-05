@@ -2,6 +2,7 @@ import { model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { TRegisterUser } from './user.interface';
 import config from '../../config';
+import { UserStatus } from './user.constant';
 
 const registerUserSchema = new Schema<TRegisterUser>(
   {
@@ -48,7 +49,12 @@ const registerUserSchema = new Schema<TRegisterUser>(
       type: String,
       trim: true,
     },
-    isBlocked: {
+    status: {
+      type: String,
+      enum: UserStatus,
+      default: 'in-progress',
+    },
+    isDeleted: {
       type: Boolean,
       default: false,
     },

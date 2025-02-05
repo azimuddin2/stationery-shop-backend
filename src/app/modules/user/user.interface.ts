@@ -7,7 +7,8 @@ export type TRegisterUser = {
   role: 'admin' | 'user';
   image?: string;
   address?: string;
-  isBlocked: boolean;
+  status: 'in-progress' | 'blocked';
+  isDeleted: boolean;
 };
 
 export type TUserRole = keyof typeof USER_ROLE;

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { UserStatus } from './user.constant';
 
 const registerUserValidationSchema = z.object({
   body: z.object({
@@ -33,11 +34,17 @@ const updateUserValidationSchema = z.object({
     role: z.enum(['admin', 'user']).default('user').optional(),
     image: z.string().optional(),
     address: z.string().optional(),
-    isBlocked: z.boolean().default(false).optional(),
+  }),
+});
+
+const changeStatusValidationSchema = z.object({
+  body: z.object({
+    status: z.enum([...UserStatus] as [string, ...string[]]),
   }),
 });
 
 export const UserValidations = {
   registerUserValidationSchema,
   updateUserValidationSchema,
+  changeStatusValidationSchema,
 };

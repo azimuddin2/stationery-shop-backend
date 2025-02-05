@@ -58,9 +58,15 @@ const updateUserIntoDB = async (
   return result;
 };
 
+const changeStatusIntoDB = async (id: string, payload: { status: string }) => {
+  const result = await User.findByIdAndUpdate(id, payload, { new: true });
+  return result;
+};
+
 export const UserServices = {
   registerUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   updateUserIntoDB,
+  changeStatusIntoDB,
 };

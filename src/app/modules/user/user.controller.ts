@@ -49,9 +49,23 @@ const updateUser = catchAsync(async (req, res) => {
   });
 });
 
+const changeStatus = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await UserServices.changeStatusIntoDB(id, req.body);
+
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Status is updated successfully!',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   registerUser,
   getAllUsers,
   getSingleUser,
   updateUser,
+  changeStatus,
 };

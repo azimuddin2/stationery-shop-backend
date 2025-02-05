@@ -23,4 +23,11 @@ router.patch(
   UserControllers.updateUser,
 );
 
+router.patch(
+  '/change-status/:id',
+  auth('admin'),
+  validateRequest(UserValidations.changeStatusValidationSchema),
+  UserControllers.changeStatus,
+);
+
 export const UserRoutes = router;
