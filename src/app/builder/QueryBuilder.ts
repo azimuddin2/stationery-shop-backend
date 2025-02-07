@@ -26,13 +26,27 @@ class QueryBuilder<T> {
   }
 
   filter() {
-    const queryObj = { ...this.query };
+    const queryObj: Record<string, any> = { ...this.query };
     const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
-
     excludeFields.forEach(element => delete queryObj[element]);
 
-    this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
+    // ✅ Handle Price Range Filtering Safely
+    if (queryObj.minPrice || queryObj.maxPrice) {
+      queryObj.price = {} as { $gte?: number; $lte?: number };
 
+      if (queryObj.minPrice) queryObj.price.$gte = Number(queryObj.minPrice);
+      if (queryObj.maxPrice) queryObj.price.$lte = Number(queryObj.maxPrice);
+
+      delete queryObj.minPrice;
+      delete queryObj.maxPrice;
+    }
+
+    // ✅ Handle Category Filtering
+    if (queryObj.category) {
+      queryObj.category = { $regex: new RegExp(queryObj.category, 'i') };
+    }
+
+    this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
     return this;
   }
 

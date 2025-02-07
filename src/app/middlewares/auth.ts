@@ -24,8 +24,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
       throw new AppError(404, 'This user is not found!');
     }
 
-    const isBlocked = user?.isBlocked;
-    if (isBlocked === true) {
+    if (user?.status === 'blocked') {
       throw new AppError(403, 'This user is blocked!');
     }
 
